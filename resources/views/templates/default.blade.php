@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="{{ asset('css/app.css') }}">
+		 <!-- CSRF Token -->
+    	<meta name="csrf-token" content="{{ csrf_token() }}">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Scripts -->
+	    <script>
+	        window.Laravel = <?php echo json_encode([
+	            'csrfToken' => csrf_token()
+	        ]); ?>
+
+	        window.myengine = <?php echo json_encode([
+	        	'appUrl' => config('app.url'),
+				'stripeKey' => config('services.stripe_connect.key'),
+	        	'user' => [
+	        		'id' => Auth::check() ? Auth::user()->id : 0,
+	        		'username' => Auth::check() ? Auth::user()->username : 0,
+					'authenticated' => Auth::check() ? 1 : 0,
+	        	]
+	        ]); ?>
+	    </script>
+
+		<title>MyEngine @yield('title')</title>
+	</head>
+	<body>
+		<div class="app" id="app">
+			@include('templates.partials._navigation')
+
+			<div class="container">
+				{{-- @include('templates.partials.alert') --}}
+				@yield('content')
+			</div>
+		</div>
+
+		<footer class="footer">
+			<div class="containe-footer">
+				<div class="content has-text-centered">
+					<p>
+						<strong>MyEngine</strong> by <a href="https://twitter.com/pritam1605">Pritam</a>
+						<div class="icon-footer">
+							<a class="icon" href="https://twitter.com/PritamBohra">
+								<i class="fa fa-twitter"></i>
+							</a>
+						</div>
+					</p>
+				</div>
+			</div>
+		</footer>
+
+		<script src="https://checkout.stripe.com/checkout.js"></script>
+		<script src="{{ asset('js/app.js') }}"></script>
+		@yield('additional_js')
+	</body>
+</html>
